@@ -65,7 +65,7 @@ import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.util.Util.constrainValue
-import com.google.android.gms.cast.framework.CastContext
+//import com.google.android.gms.cast.framework.CastContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -147,21 +147,21 @@ open class MusicService : MediaBrowserServiceCompat() {
      * If Cast is available, create a CastPlayer to handle communication with a Cast session.
      */
     private val castPlayer: CastPlayer? by lazy {
-        try {
-            val castContext = CastContext.getSharedInstance(this)
-            CastPlayer(castContext, CastMediaItemConverter()).apply {
-                setSessionAvailabilityListener(UampCastSessionAvailabilityListener())
-                addListener(playerListener)
-            }
-        } catch (e : Exception) {
+//        try {
+//            val castContext = CastContext.getSharedInstance(this)
+//            CastPlayer(castContext, CastMediaItemConverter()).apply {
+//                setSessionAvailabilityListener(UampCastSessionAvailabilityListener())
+//                addListener(playerListener)
+//            }
+//        } catch (e : Exception) {
             // We wouldn't normally catch the generic `Exception` however
             // calling `CastContext.getSharedInstance` can throw various exceptions, all of which
             // indicate that Cast is unavailable.
             // Related internal bug b/68009560.
-            Log.i(TAG, "Cast is not available on this device. " +
-                    "Exception thrown when attempting to obtain CastContext. " + e.message)
+//            Log.i(TAG, "Cast is not available on this device. " +
+//                    "Exception thrown when attempting to obtain CastContext. " + e.message)
             null
-        }
+//        }
     }
 
     @ExperimentalCoroutinesApi
@@ -171,7 +171,7 @@ open class MusicService : MediaBrowserServiceCompat() {
         // Build a PendingIntent that can be used to launch the UI.
         val sessionActivityPendingIntent =
             packageManager?.getLaunchIntentForPackage(packageName)?.let { sessionIntent ->
-                PendingIntent.getActivity(this, 0, sessionIntent, 0)
+                PendingIntent.getActivity(this, 0, sessionIntent, PendingIntent.FLAG_IMMUTABLE)
             }
 
         // Create a new MediaSession.

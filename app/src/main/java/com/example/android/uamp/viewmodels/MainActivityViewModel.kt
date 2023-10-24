@@ -22,9 +22,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
+//import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.switchMap
 import com.example.android.uamp.MainActivity
 import com.example.android.uamp.MediaItemData
 import com.example.android.uamp.common.MusicServiceConnection
@@ -43,14 +44,26 @@ class MainActivityViewModel(
     private val musicServiceConnection: MusicServiceConnection
 ) : ViewModel() {
 
+    //    musicServiceConnection.isConnected.sw
     val rootMediaId: LiveData<String> =
-        Transformations.map(musicServiceConnection.isConnected) { isConnected ->
+        musicServiceConnection.isConnected.switchMap { isConnected ->
             if (isConnected) {
-                musicServiceConnection.rootMediaId
+                val mutableLiveData = MutableLiveData<String>(musicServiceConnection.rootMediaId)
+                val liveData: LiveData<String> = mutableLiveData
+                return@switchMap liveData
             } else {
-                null
+                return@switchMap null
             }
+
         }
+//    val rootMediaId: LiveData<String> =
+//        Transformations.map(musicServiceConnection.isConnected) { isConnected ->
+//            if (isConnected) {
+//                musicServiceConnection.rootMediaId
+//            } else {
+//                null
+//            }
+//        }
 
     /**
      * [navigateToMediaItem] acts as an "event", rather than state. [Observer]s
@@ -122,6 +135,7 @@ class MainActivityViewModel(
                 when {
                     playbackState.isPlaying ->
                         if (pauseAllowed) transportControls.pause() else Unit
+
                     playbackState.isPlayEnabled -> transportControls.play()
                     else -> {
                         Log.w(
@@ -164,7 +178,7 @@ class MainActivityViewModel(
     ) : ViewModelProvider.NewInstanceFactory() {
 
         @Suppress("unchecked_cast")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MainActivityViewModel(musicServiceConnection) as T
         }
     }

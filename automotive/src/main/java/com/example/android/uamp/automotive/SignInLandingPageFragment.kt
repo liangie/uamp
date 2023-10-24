@@ -33,13 +33,13 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+//import com.google.android.gms.auth.api.signin.GoogleSignIn
+//import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+//import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+//import com.google.android.gms.common.ConnectionResult
+//import com.google.android.gms.common.GoogleApiAvailability
+//import com.google.android.gms.common.api.ApiException
+//import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -183,63 +183,63 @@ class SignInLandingPageFragment : Fragment() {
      * information on integrating Google sign in into your Android app.
      */
     private fun configureGoogleSignIn() {
-        if (!ENABLE_GOOGLE_SIGN_IN or !checkPlayServices()) {
+//        if (!ENABLE_GOOGLE_SIGN_IN or !checkPlayServices()) {
             googleSignInButton.visibility = View.GONE
             return
-        }
+//        }
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.server_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInButton.text = getString(R.string.google_sign_in_button_label)
-
-        googleSignInButton.setOnClickListener {
-            val mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-        }
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.server_client_id))
+//            .requestEmail()
+//            .build()
+//
+//        googleSignInButton.text = getString(R.string.google_sign_in_button_label)
+//
+//        googleSignInButton.setOnClickListener {
+//            val mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+//            val signInIntent = mGoogleSignInClient.signInIntent
+//            startActivityForResult(signInIntent, RC_SIGN_IN)
+//        }
     }
 
-    private fun checkPlayServices(): Boolean {
-        val apiAvailability = GoogleApiAvailability.getInstance();
-        val resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(
-                    activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST
-                ).show();
-            }
-            return false;
-        }
-        return true;
-    }
+//    private fun checkPlayServices(): Boolean {
+//        val apiAvailability = GoogleApiAvailability.getInstance();
+//        val resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
+//        if (resultCode != ConnectionResult.SUCCESS) {
+//            if (apiAvailability.isUserResolvableError(resultCode)) {
+//                apiAvailability.getErrorDialog(
+//                    activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST
+//                ).show();
+//            }
+//            return false;
+//        }
+//        return true;
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleGoogleSignIn(task)
-        }
+//        if (requestCode == RC_SIGN_IN) {
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            handleGoogleSignIn(task)
+//        }
     }
 
-    private fun handleGoogleSignIn(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            @Suppress("unused_variable") val idToken = account?.idToken
-
-            // Send ID Token to server and validate.
-
-        } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText(
-                requireContext(), getString(R.string.sign_in_failed_message, e.statusCode),
-                Toast.LENGTH_SHORT
-            )
-                .show()
-        }
-    }
+//    private fun handleGoogleSignIn(completedTask: Task<GoogleSignInAccount>) {
+//        try {
+//            val account = completedTask.getResult(ApiException::class.java)
+//            @Suppress("unused_variable") val idToken = account?.idToken
+//
+//            // Send ID Token to server and validate.
+//
+//        } catch (e: ApiException) {
+//            // The ApiException status code indicates the detailed failure reason.
+//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+//            Toast.makeText(
+//                requireContext(), getString(R.string.sign_in_failed_message, e.statusCode),
+//                Toast.LENGTH_SHORT
+//            )
+//                .show()
+//        }
+//    }
 }
